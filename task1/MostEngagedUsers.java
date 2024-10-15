@@ -7,13 +7,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class MostEngagedUsers {
-
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.err.println("Usage: MostEngagedUsers <input path> <output path>");
-            System.exit(-1);
-        }
-
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "Most Engaged Users");
 
