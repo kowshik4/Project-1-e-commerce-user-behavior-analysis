@@ -1,16 +1,25 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import csv
 
-# Read from standard input
+# Load product category mappings from products.csv
+product_category_map = {}
+
+with open('input/products.csv', 'r') as file:
+    reader = csv.reader(file)
+    next(reader)  # Skip header
+    for row in reader:
+        product_id, product_name, category, price = row
+        product_category_map[product_id] = category
+
+# Process user_activity.csv and transactions.csv for MapReduce
 for line in sys.stdin:
-    fields = line.strip().split(",")
-    
-    if len(fields) == 5 and fields[1] in ['AddToCart', 'Browse']:
-        # Emit interaction
+    fields = line.strip().split(',')
+    if len(fields) == 5:  # user_activity.csv format
         product_id = fields[3]
-        print(f"{product_id}\tinteraction")
-    
-    elif len(fields) == 7:  # Assuming this structure for transactions
+        category = product_category_map.get(product_id, "Unknown")
+        print(f"{category}\tinteraction")
+    elif len(fields) == 7:  # transactions.csv format
         product_id = fields[3]
-        print(f"{product_id}\tpurchase")
+        category = product_category_map.get(product_id, "Unknown")
+        print(f"{category}\tpurchase")
